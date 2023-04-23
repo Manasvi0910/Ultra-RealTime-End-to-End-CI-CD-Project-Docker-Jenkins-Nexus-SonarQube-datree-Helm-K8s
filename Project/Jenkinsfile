@@ -1,17 +1,16 @@
-pipeline{
-
+pipeline {
     agent any
 
-    stages{
-        stage('Quality Gate status'){
-
-            
-            steps{
-                script{
-                        waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+    stages {
+        stage('Quality Gate status') {
+            steps {
+                withSonarQubeEnv('sonar') {
+                    sh './gradlew sonarqube'
+                }
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
                 }
             }
         }
-        
     }
 }
