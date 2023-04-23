@@ -5,7 +5,11 @@ pipeline {
         stage('Quality Gate status') {
             steps {
                 withSonarQubeEnv('sonar') {
-                    sh './gradlew sonarqube'
+                    // Replace the command with the one you use to run the SonarQube analysis
+                    // For example, if you use Maven:
+                    sh 'mvn sonar:sonar'
+                    // Or if you use npm:
+                    // sh 'npm run sonar-scanner'
                 }
                 script {
                     waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
@@ -14,3 +18,12 @@ pipeline {
         }
     }
 }
+In the withSonarQubeEnv block, replace the command ./gradlew sonarqube with the command you use to run the SonarQube analysis for your specific build tool. For example, if you use Maven, replace it with mvn sonar:sonar. Or if you use npm, replace it with npm run sonar-scanner.
+
+After running the SonarQube analysis, the waitForQualityGate step will retrieve the quality gate status from SonarQube and determine whether the pipeline should pass or fail based on the configured conditions.
+
+
+
+
+
+
